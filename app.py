@@ -20,6 +20,9 @@ client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 class ChatRequest(BaseModel):
     message: str
+@app.get("/")
+def health():
+    return {"status": "ok"}
 
 @app.post("/chat")
 def chat(req: ChatRequest):
@@ -31,4 +34,5 @@ def chat(req: ChatRequest):
         ],
     )
     return {"reply": response.choices[0].message.content}
+
 
