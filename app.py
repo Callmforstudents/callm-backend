@@ -5,10 +5,13 @@ import os
 from openai import OpenAI
 
 app = FastAPI()
+
+# Health check
 @app.get("/")
 def health():
     return {"status": "ok"}
 
+# CORS voor je GitHub Pages domein
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://callmforstudents.github.io"],
@@ -20,9 +23,6 @@ client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 class ChatRequest(BaseModel):
     message: str
-@app.get("/")
-def health():
-    return {"status": "ok"}
 
 @app.post("/chat")
 def chat(req: ChatRequest):
@@ -30,9 +30,7 @@ def chat(req: ChatRequest):
         model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": "Je bent Call'm, een sparringpartner voor MBO studenten."},
-            {"role": "user", "content": req.message}
+            {"role": "user", "content": req.message},
         ],
     )
     return {"reply": response.choices[0].message.content}
-
-
