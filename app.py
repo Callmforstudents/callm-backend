@@ -5,6 +5,9 @@ import os
 from openai import OpenAI
 
 app = FastAPI()
+@app.get("/")
+def health():
+    return {"status": "ok"}
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,3 +31,4 @@ def chat(req: ChatRequest):
         ],
     )
     return {"reply": response.choices[0].message.content}
+
